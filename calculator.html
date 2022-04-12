@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Emblema+One&family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+    rel="stylesheet">
+  <title>Calculator</title>
+  <style>
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: aliceblue;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      font-family: 'Noto Sans TC', sans-serif;
+      letter-spacing: 2px;
+    }
+
+    #calculator {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .text {
+      color: #43889a;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .calculator {
+      width: 100%;
+      background-color: #95d6c2;
+      border-radius: 20px;
+      box-shadow: 0 5px 10px #43889a;
+    }
+
+    table {
+      width: 100%;
+      padding: 15px;
+    }
+
+    td {
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 2px;
+      font-size: 20px;
+    }
+
+    #input {
+      background-color: #d5e2e2;
+      text-align: right;
+      font-size: 32px;
+      font-family: 'Emblema One', cursive;
+    }
+
+    .number {
+      background-color: #f5f4f4;
+    }
+
+    .sign {
+      border: 1px solid #5cb2a4;
+    }
+
+    .clear {
+      background-color: #5cb2a4;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="calculator">
+    <h1 class="text" :style="{ color: style }">{{ text }}</h1>
+    <table class="calculator">
+      <tr>
+        <td colspan="4" id="input">{{ display }}</td>
+      </tr>
+      <tr style="height: 10px;"></tr>
+      <tr>
+        <td class="clear" @click="clear">C</td>
+        <td class="sign" @click="input('/')">÷</td>
+        <td class="sign" @click="input('*')">×</td>
+        <td class="sign" @click="input('-')">-</td>
+      </tr>
+      <tr>
+        <td class="number" @click="input(7)">7</td>
+        <td class="number" @click="input(8)">8</td>
+        <td class="number" @click="input(9)">9</td>
+        <td class="sign" rowspan="2" @click="input('+')">+</td>
+      </tr>
+      <tr>
+        <td class="number" @click="input(4)">4</td>
+        <td class="number" @click="input(5)">5</td>
+        <td class="number" @click="input(6)">6</td>
+      </tr>
+      <tr>
+        <td class="number" @click="input(1)">1</td>
+        <td class="number" @click="input(2)">2</td>
+        <td class="number" @click="input(3)">3</td>
+        <td class="sign" rowspan="2" @click="equal"> = </td>
+      </tr>
+      <tr>
+        <td class="number" colspan="2" @click="input(0)">0</td>
+        <td class="number" @click="input('.')">.</td>
+      </tr>
+    </table>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#calculator',
+      data() {
+        return {
+          text: 'Calculator',
+          math: [],
+          display: 0,
+          style: '#43889a'
+        }
+      },
+      methods: {
+        input(value) {
+          this.math.push(value)
+          this.display = this.math.join("").replace("*", "×").replace("/", "÷")
+        },
+        async equal() {
+          try {
+            this.text = 'Calculator'
+            this.style = '#43889a'
+            this.display = await eval(this.math.join(""))
+            this.math = [this.display]
+          } catch (error) {
+            this.text = 'Wrong!'
+            this.style = '#f92e2e'
+            this.display = 0
+            this.math = []
+          }
+        },
+        clear() {
+          this.display = 0
+          this.math = []
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>
