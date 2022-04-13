@@ -21,6 +21,8 @@
       padding: 20px;
       box-sizing: border-box;
       font-family: 'Noto Sans TC', sans-serif;
+      font-weight: 600;
+      color: #555;
       letter-spacing: 2px;
     }
 
@@ -48,6 +50,7 @@
     }
 
     td {
+      width: 25%;
       padding: 20px;
       text-align: center;
       cursor: pointer;
@@ -64,14 +67,42 @@
 
     .number {
       background-color: #f5f4f4;
+      transition: 0.3s;
+    }
+
+    .number:hover {
+      background-color: #efeded;
+    }
+
+    .number:active {
+      background-color: #d6d6d6;
     }
 
     .sign {
       border: 1px solid #5cb2a4;
+      transition: 0.3s;
+    }
+
+    .sign:hover {
+      background-color: #7dcbb4;
+    }
+
+    .sign:active {
+      background-color: #5cb2a4;
     }
 
     .clear {
       background-color: #5cb2a4;
+      transition: 0.3s;
+    }
+
+
+    .clear:hover {
+      background-color: #4ca193;
+    }
+
+    .clear:active {
+      background-color: #368a7c;
     }
   </style>
 </head>
@@ -86,8 +117,8 @@
       <tr style="height: 10px;"></tr>
       <tr>
         <td class="clear" @click="clear">C</td>
-        <td class="sign" @click="input('/')">÷</td>
-        <td class="sign" @click="input('*')">×</td>
+        <td class="sign" @click="input('÷')">÷</td>
+        <td class="sign" @click="input('×')">×</td>
         <td class="sign" @click="input('-')">-</td>
       </tr>
       <tr>
@@ -128,13 +159,13 @@
       methods: {
         input(value) {
           this.math.push(value)
-          this.display = this.math.join("").replace("*", "×").replace("/", "÷")
+          this.display = this.math.join("")
         },
         async equal() {
           try {
             this.text = 'Calculator'
             this.style = '#43889a'
-            this.display = await eval(this.math.join(""))
+            this.display = await eval(this.math.join("").replace(/×/g, "*").replace(/÷/g, "/"))
             this.math = [this.display]
           } catch (error) {
             this.text = 'Wrong!'
